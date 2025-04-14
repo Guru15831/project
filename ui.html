@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            /* Prominent gradient background */
+            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input[type="file"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .country-code {
+            background-color: #e9e9e9;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        #mobile-number {
+            border-radius: 0 8px 8px 0;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background-color: #4285f4;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            background-color: #61bbf0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #13547a ;
+        }
+
+        .file-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .mobile-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Video</h1>
+        <form id="upload-form">
+            <div class="form-group">
+                <label for="video-upload">Upload your MP4 video:</label>
+                <input type="file" id="video-upload" accept="video/mp4" required>
+                <p class="file-info">Maximum file size: 500MB</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile-number">Enter the mobile number:</label>
+                <div class="phone-input-container">
+                    <span class="country-code">+91</span>
+                    <input type="tel" id="mobile-number" placeholder="10-digit mobile number" 
+                           pattern="[6-9][0-9]{9}" maxlength="10" required>
+                </div>
+                <p class="mobile-info">Valid Indian mobile number (10 digits starting with 6, 7, 8, or 9)</p>
+                <p class="error" id="phone-error">Please enter a valid Indian mobile number</p>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            const mobileNumber = document.getElementById('mobile-number').value;
+            const phoneError = document.getElementById('phone-error');
+            
+            // Validate Indian mobile number (10 digits starting with 6-9)
+            const indianMobilePattern = /^[6-9]\d{9}$/;
+            
+            if (!indianMobilePattern.test(mobileNumber)) {
+                event.preventDefault();
+                phoneError.style.display = 'block';
+            } else {
+                phoneError.style.display = 'none';
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('mobile-number').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10);
+            
+            const phoneError = document.getElementById('phone-error');
+            const indianMobilePattern = /^[6-9]\d{9}$/;
+            
+            if (this.value.length > 0 && !indianMobilePattern.test(this.value) && this.value.length === 10) {
+                phoneError.style.display = 'block';
+            } else {
+                phoneError.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
